@@ -197,9 +197,30 @@ function isProductInCart(carts, productId) {
  */
 function addToCart(carts, product, quantity) {
   // 請實作此函式
-
-  
+  // 確認是否已存在購物車中 
+  // 如果存在找出是第幾筆
+  const existIndexInCart = carts.findIndex(item => item.product.id === product.id);
+  //如果存在，產生新的購物車，並合併數量
+  if(existIndexInCart !== -1)
+  {
+    const newCarts = carts.map((item, index) => {
+      if(index === existIndexInCart){
+        return {
+          ...item,
+          quantity: (item.quantity + quantity)
+        };
+      }
+      return item;
+    })
+    return newCarts;
+  }
+  else{ //如果不存在，產生新的購物車，並新增一筆
+    const newCarts =[...carts, {id:`cart-${Date.now()}`, product, quantity}];
+    return newCarts;
+  //購物車陣列中每一個元素都是一個物件長相 { id: 'cart-1', product: products[0], quantity: 2 },//prod-1
+  }
 }
+
 
 /**
  * 2. 更新購物車商品數量
@@ -209,7 +230,20 @@ function addToCart(carts, product, quantity) {
  * @returns {Array} - 回傳新的購物車陣列，如果 newQuantity <= 0，移除該商品
  */
 function updateCartItemQuantity(carts, cartId, newQuantity) {
-  // 請實作此函式
+  if (newQuantity <= 0) {
+    const newCharts = carts.filter(item => item.id !== cartId);
+    return newCharts;
+  }
+  else
+  {   
+    const newCharts = carts.map((item) => {
+    if (item.id === cartId) {
+      return { ...item, quantity: newQuantity };
+      }
+      return item;
+    });
+  return newCharts;
+  }
 }
 
 /**
@@ -220,6 +254,8 @@ function updateCartItemQuantity(carts, cartId, newQuantity) {
  */
 function removeFromCart(carts, cartId) {
   // 請實作此函式
+  const newCharts = carts.filter(item => item.id !== cartId);
+  return newCharts;  
 }
 
 /**
@@ -228,6 +264,7 @@ function removeFromCart(carts, cartId) {
  */
 function clearCart() {
   // 請實作此函式
+  return [];
 }
 
 // ========================================
@@ -302,14 +339,14 @@ function groupOrdersByPayment(orders) {
 // console.log('isProductInCart:', isProductInCart(carts, 'prod-5'));
 
 // // 任務三測試
-console.log('\n=== 任務三測試 ===');
-console.log('addToCart:', addToCart(carts, products[1], 2));
-console.log('updateCartItemQuantity:', updateCartItemQuantity(carts, 'cart-1', 5));
-console.log('removeFromCart:', removeFromCart(carts, 'cart-1'));
-console.log('clearCart:', clearCart());
+// console.log('\n=== 任務三測試 ===');
+// console.log('addToCart:', addToCart(carts, products[3], 7));
+// console.log('updateCartItemQuantity:', updateCartItemQuantity(carts, 'cart-1', 0));
+// console.log('removeFromCart:', removeFromCart(carts, 'cart-1'));
+// console.log('clearCart:', clearCart());
 
 // // 任務四測試
-// console.log('\n=== 任務四測試 ===');
+console.log('\n=== 任務四測試 ===');
 // console.log('calculateTotalRevenue:', calculateTotalRevenue(orders));
 // console.log('filterOrdersByStatus:', filterOrdersByStatus(orders, true));
 // console.log('generateOrderReport:', generateOrderReport(orders));
