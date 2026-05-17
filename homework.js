@@ -276,8 +276,20 @@ function clearCart() {
  * @param {Array} orders - 訂單陣列
  * @returns {number} - 只計算已付款 (paid: true) 的訂單
  */
-function calculateTotalRevenue(orders) {
+function calculateTotalRevenue(orders, isPaid = true) {
   // 請實作此函式
+  const totalRevenue = orders.reduce((total, item) => {
+    if(isPaid === true){ //如果isPaid是true，則只計算已付款訂單的總營收
+      if(item.paid === true){
+      total += item.total;
+      }
+    }
+    else{ //如果isPaid是false，則計算包含付款跟未付款訂單的總營收
+      total += item.total;
+    }
+    return total;
+  },0);
+  return totalRevenue;
 }
 
 /**
@@ -288,6 +300,8 @@ function calculateTotalRevenue(orders) {
  */
 function filterOrdersByStatus(orders, isPaid) {
   // 請實作此函式
+  const filteredOrders = orders.filter(item => item.paid === isPaid);
+  return filteredOrders;
 }
 
 /**
@@ -304,8 +318,20 @@ function filterOrdersByStatus(orders, isPaid) {
  */
 function generateOrderReport(orders) {
   // 請實作此函式
+  const totalOrders = orders.length; //訂單筆數
+  const paidOrders = orders.filter(item => item.paid === true).length; //已付款訂單筆數
+  const unpaidOrders = orders.filter(item => item.paid === false).length; //未付款訂單筆數
+  const totalRevenue = calculateTotalRevenue(orders); //總收入
+  const averageOrderValue = calculateTotalRevenue(orders, false) / totalOrders; //平均訂單金額(包含付款及未付款訂單的總營收除以訂單筆數)
+  let obj ={
+    totalOrders: totalOrders,
+    paidOrders: paidOrders,
+    unpaidOrders: unpaidOrders,
+    totalRevenue: totalRevenue,
+    averageOrderValue: averageOrderValue
+  };
+  return obj;
 }
-
 /**
  * 4. 依付款方式統計
  * @param {Array} orders - 訂單陣列
@@ -317,6 +343,14 @@ function generateOrderReport(orders) {
  */
 function groupOrdersByPayment(orders) {
   // 請實作此函式
+    const ATMOrders = orders.filter(item => item.user.payment === 'ATM');
+    const CreditCardOrders = orders.filter(item => item.user.payment === 'Credit Card');
+    
+    return {
+      'ATM': ATMOrders,
+      'Credit Card': CreditCardOrders
+    };
+    
 }
 
 // ========================================
@@ -347,10 +381,10 @@ function groupOrdersByPayment(orders) {
 
 // // 任務四測試
 console.log('\n=== 任務四測試 ===');
-// console.log('calculateTotalRevenue:', calculateTotalRevenue(orders));
-// console.log('filterOrdersByStatus:', filterOrdersByStatus(orders, true));
-// console.log('generateOrderReport:', generateOrderReport(orders));
-// console.log('groupOrdersByPayment:', groupOrdersByPayment(orders));
+console.log('calculateTotalRevenue:', calculateTotalRevenue(orders));
+console.log('filterOrdersByStatus:', filterOrdersByStatus(orders, true));
+console.log('generateOrderReport:', generateOrderReport(orders));
+console.log('groupOrdersByPayment:', groupOrdersByPayment(orders));
 
 // ========================================
 // 匯出函式供測試使用
