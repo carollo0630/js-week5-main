@@ -350,7 +350,7 @@ function groupOrdersByPayment(orders) {
       'ATM': ATMOrders,
       'Credit Card': CreditCardOrders
     };
-    
+
 }
 
 // ========================================
@@ -380,11 +380,11 @@ function groupOrdersByPayment(orders) {
 // console.log('clearCart:', clearCart());
 
 // // 任務四測試
-console.log('\n=== 任務四測試 ===');
-console.log('calculateTotalRevenue:', calculateTotalRevenue(orders));
-console.log('filterOrdersByStatus:', filterOrdersByStatus(orders, true));
-console.log('generateOrderReport:', generateOrderReport(orders));
-console.log('groupOrdersByPayment:', groupOrdersByPayment(orders));
+// console.log('\n=== 任務四測試 ===');
+// console.log('calculateTotalRevenue:', calculateTotalRevenue(orders));
+// console.log('filterOrdersByStatus:', filterOrdersByStatus(orders, true));
+// console.log('generateOrderReport:', generateOrderReport(orders));
+// console.log('groupOrdersByPayment:', groupOrdersByPayment(orders));
 
 // ========================================
 // 匯出函式供測試使用
