@@ -321,8 +321,12 @@ function generateOrderReport(orders) {
   const totalOrders = orders.length; //訂單筆數
   const paidOrders = orders.filter(item => item.paid === true).length; //已付款訂單筆數
   const unpaidOrders = orders.filter(item => item.paid === false).length; //未付款訂單筆數
-  const totalRevenue = calculateTotalRevenue(orders); //總收入
-  const averageOrderValue = calculateTotalRevenue(orders, false) / totalOrders; //平均訂單金額(包含付款及未付款訂單的總營收除以訂單筆數)
+  //const totalRevenue = calculateTotalRevenue(orders); //已付款訂單的總收入
+  //也可以直接用上面篩選的新陣列計算
+  const paidOrdersArray =orders.filter(item => item.paid === true);
+  const totalRevenue = paidOrdersArray.reduce((total, item) => total + item.total,0);
+
+  const averageOrderValue = Math.round(calculateTotalRevenue(orders, false) / totalOrders); //平均訂單金額(包含付款及未付款訂單的總營收除以訂單筆數)
   let obj ={
     totalOrders: totalOrders,
     paidOrders: paidOrders,
@@ -380,11 +384,11 @@ function groupOrdersByPayment(orders) {
 // console.log('clearCart:', clearCart());
 
 // // 任務四測試
-// console.log('\n=== 任務四測試 ===');
+console.log('\n=== 任務四測試 ===');
 // console.log('calculateTotalRevenue:', calculateTotalRevenue(orders));
 // console.log('filterOrdersByStatus:', filterOrdersByStatus(orders, true));
-// console.log('generateOrderReport:', generateOrderReport(orders));
-// console.log('groupOrdersByPayment:', groupOrdersByPayment(orders));
+console.log('generateOrderReport:', generateOrderReport(orders));
+console.log('groupOrdersByPayment:', groupOrdersByPayment(orders));
 
 // ========================================
 // 匯出函式供測試使用
